@@ -1,37 +1,36 @@
 #include "../Cub3D.h"
 
-static int	is_valid_neighbor(char **grid, int y, int x, int height, int width)
+
+static int	is_ok(char **g, int y, int x, t_map *m)
 {
-	if (y < 0 || y >= height || x < 0 || x >= width)
+	if (y < 0 || y >= m->h || x < 0 || x >= m->w)
 		return (0);
-	if (grid[y][x] == ' ' || grid[y][x] == '\0')
+	if (g[y][x] == ' ' || g[y][x] == '\0')
 		return (0);
 	return (1);
 }
 
-static int	check_wall_closed(char **grid, int height, int width)
+int	check_walls(char **g, int h, int w)
 {
-	int	i;
-	int	j;
+	int i;
+	int j;
+	t_map m;
 
+	m.h = h;
+	m.w = w;
 	i = 0;
-	while (i < height)
+	while (i < h)
 	{
 		j = 0;
-		while (j < width && grid[i][j])
+		while (j < w && g[i][j])
 		{
-			if (grid[i][j] == '0' || grid[i][j] == 'N' || 
-				grid[i][j] == 'S' || grid[i][j] == 'E' || grid[i][j] == 'W')
+			if (ft_strchr("0NSEW", g[i][j]))
 			{
-				if (i == 0 || i == height - 1)
+				if (i == 0 || i == h - 1)
 					return (0);
-				if (!is_valid_neighbor(grid, i - 1, j, height, width))
+				if (!is_ok(g, i - 1, j, &m) || !is_ok(g, i + 1, j, &m))
 					return (0);
-				if (!is_valid_neighbor(grid, i + 1, j, height, width))
-					return (0);
-				if (!is_valid_neighbor(grid, i, j - 1, height, width))
-					return (0);
-				if (!is_valid_neighbor(grid, i, j + 1, height, width))
+				if (!is_ok(g, i, j - 1, &m) || !is_ok(g, i, j + 1, &m))
 					return (0);
 			}
 			j++;
@@ -41,57 +40,48 @@ static int	check_wall_closed(char **grid, int height, int width)
 	return (1);
 }
 
-static void	init_player_direction(t_player *player, char dir)
+static void	set_dir(t_plr *p, char d)
 {
-	if (dir == 'N')
+	if (d == 'N')
 	{
-		player->dir_x = 0;
-		player->dir_y = -1;
-		player->plane_x = 0.66;
-		player->plane_y = 0;
+		p->dy = -1;
+		p->cx = 0.66;
 	}
-	else if (dir == 'S')
+	else if (d == 'S')
 	{
-		player->dir_x = 0;
-		player->dir_y = 1;
-		player->plane_x = -0.66;
-		player->plane_y = 0;
+		p->dy = 1;
+		p->cx = -0.66;
 	}
-	else if (dir == 'E')
+	else if (d == 'E')
 	{
-		player->dir_x = 1;
-		player->dir_y = 0;
-		player->plane_x = 0;
-		player->plane_y = 0.66;
+		p->dx = 1;
+		p->cy = 0.66;
 	}
-	else if (dir == 'W')
+	else if (d == 'W')
 	{
-		player->dir_x = -1;
-		player->dir_y = 0;
-		player->plane_x = 0;
-		player->plane_y = -0.66;
+		p->dx = -1;
+		p->cy = -0.66;
 	}
 }
 
-static int	set_player_position(t_game *game)
+int	set_player(t_game *g)
 {
-	int	i;
-	int	j;
+	int i;
+	int j;
 
 	i = 0;
-	while (i < game->map->height)
+	while (i < g->map->h)
 	{
 		j = 0;
-		while (game->map->grid[i][j])
+		while (g->map->grid[i][j])
 		{
-			if (game->map->grid[i][j] == 'N' || game->map->grid[i][j] == 'S' || 
-				game->map->grid[i][j] == 'E' || game->map->grid[i][j] == 'W')
+			if (ft_strchr("NSEW", g->map->grid[i][j]))
 			{
-				game->player->pos_x = (double)j + 0.5;
-				game->player->pos_y = (double)i + 0.5;
-				game->player->start_dir = game->map->grid[i][j];
-				init_player_direction(game->player, game->map->grid[i][j]);
-				game->map->grid[i][j] = '0';
+				g->plr->px = (double)j + 0.5;
+				g->plr->py = (double)i + 0.5;
+				g->plr->dir = g->map->grid[i][j];
+				set_dir(g->plr, g->map->grid[i][j]);
+				g->map->grid[i][j] = '0';
 				return (1);
 			}
 			j++;
@@ -101,28 +91,18 @@ static int	set_player_position(t_game *game)
 	return (0);
 }
 
-int	validate_and_init_map(t_game *game)
+int	validate_and_init_map(t_game *g)
 {
-	if (!validate_map_chars(game->map))
-	{
-		write(2, "Char validation failed\n", 23);
+	if (!valid_chars(g->map))
 		return (0);
-	}
-	if (!check_wall_closed(game->map->grid, game->map->height, game->map->width))
-	{
-		write(2, "Wall check failed\n", 18);
+	if (!no_empty_gaps(g->map))
 		return (0);
-	}
-	if (!flood_fill_check(game->map))
-	{
-		write(2, "Flood fill failed\n", 18);
+	if (!check_walls(g->map->grid, g->map->h, g->map->w))
 		return (0);
-	}
-	if (!set_player_position(game))
-	{
-		write(2, "Player position failed\n", 23);
+	if (!check_flood(g->map))
 		return (0);
-	}
-	game->map->is_valid = 1;
+	if (!set_player(g))
+		return (0);
+	g->map->ok = 1;
 	return (1);
 }

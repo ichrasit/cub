@@ -1,113 +1,125 @@
 #include "../Cub3D.h"
 
-static int	is_texture_line(char *line, char **path, char *id)
-{
-	int	i;
-	int	j;
 
-	i = 0;
-	while (line[i] == ' ' || line[i] == '\t')
+static int	get_path(char *s, char **p, int i)
+{
+	int len;
+
+	while (s[i] && (s[i] == ' ' || s[i] == '\t'))
 		i++;
-	if (ft_strncmp(line + i, id, ft_strlen(id)) != 0)
+	len = 0;
+	while (s[i + len] && s[i + len] != '\n' && s[i + len] != ' ')
+		len++;
+	*p = malloc(len + 1);
+	if (!*p)
 		return (0);
-	i += ft_strlen(id);
-	while (line[i] == ' ' || line[i] == '\t')
-		i++;
-	j = i;
-	while (line[j] && line[j] != '\n' && line[j] != ' ' && line[j] != '\t')
-		j++;
-	*path = malloc(j - i + 1);
-	if (!*path)
-		return (0);
-	j = 0;
-	while (line[i] && line[i] != '\n' && line[i] != ' ' && line[i] != '\t')
-		(*path)[j++] = line[i++];
-	(*path)[j] = '\0';
+	ft_strlcpy(*p, s + i, len + 1);
 	return (1);
 }
 
-static int	parse_color(char *line, int *color)
+static int	get_val(char *s, int *i)
 {
-	int	i;
-	int	r;
-	int	g;
-	int	b;
+	int n;
 
-	i = 0;
-	while (line[i] == ' ' || line[i] == '\t')
+	while (s[*i] && (s[*i] == ' ' || s[*i] == '\t'))
+		(*i)++;
+	if (!ft_isdigit(s[*i]))
+		return (-1);
+	n = ft_atoi(s + *i);
+	while (s[*i] && ft_isdigit(s[*i]))
+		(*i)++;
+	while (s[*i] && (s[*i] == ' ' || s[*i] == '\t'))
+		(*i)++;
+	return (n);
+}
+
+static int	get_rgb(char *s, int *c)
+{
+	int r;
+	int g;
+	int b;
+	int i;
+
+	i = 1;
+	r = get_val(s, &i);
+	if (s[i] == ',')
 		i++;
-	i++;
-	while (line[i] == ' ' || line[i] == '\t')
+	g = get_val(s, &i);
+	if (s[i] == ',')
 		i++;
-	r = ft_atoi(line + i);
-	while (line[i] && line[i] != ',')
-		i++;
-	i++;
-	g = ft_atoi(line + i);
-	while (line[i] && line[i] != ',')
-		i++;
-	i++;
-	b = ft_atoi(line + i);
+	b = get_val(s, &i);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
 		return (0);
-	*color = (r << 16) | (g << 8) | b;
+	*c = (r << 16) | (g << 8) | b;
 	return (1);
 }
 
-static int	parse_config_line(char *line, t_game *game)
+static int	is_map_line(char *s)
 {
-	int	i;
+	int i;
 
 	i = 0;
-	while (line[i] == ' ' || line[i] == '\t')
+	while (s[i] == ' ' || s[i] == '\t')
 		i++;
-	if (line[i] == 'N' && line[i + 1] == 'O' && line[i + 2] == ' ')
-		return (is_texture_line(line, &game->texture->north_path, "NO"));
-	else if (line[i] == 'S' && line[i + 1] == 'O' && line[i + 2] == ' ')
-		return (is_texture_line(line, &game->texture->south_path, "SO"));
-	else if (line[i] == 'W' && line[i + 1] == 'E' && line[i + 2] == ' ')
-		return (is_texture_line(line, &game->texture->west_path, "WE"));
-	else if (line[i] == 'E' && line[i + 1] == 'A' && line[i + 2] == ' ')
-		return (is_texture_line(line, &game->texture->east_path, "EA"));
-	else if (line[i] == 'F' && line[i + 1] == ' ')
-		return (parse_color(line, &game->map->floor_color));
-	else if (line[i] == 'C' && line[i + 1] == ' ')
-		return (parse_color(line, &game->map->ceiling_color));
+	return (s[i] == '1' || s[i] == '0');
+}
+
+static int	chk_line(char *s, t_game *g)
+{
+	int i;
+
+	i = 0;
+	while (s[i] == ' ' || s[i] == '\t')
+		i++;
+	if (!s[i])
+		return (1);
+	if (!ft_strncmp(s + i, "NO", 2))
+		return (get_path(s, &g->tex->n_path, i + 2));
+	if (!ft_strncmp(s + i, "SO", 2))
+		return (get_path(s, &g->tex->s_path, i + 2));
+	if (!ft_strncmp(s + i, "WE", 2))
+		return (get_path(s, &g->tex->w_path, i + 2));
+	if (!ft_strncmp(s + i, "EA", 2))
+		return (get_path(s, &g->tex->e_path, i + 2));
+	if (!ft_strncmp(s + i, "F", 1))
+		return (get_rgb(s + i, &g->map->f_col));
+	if (!ft_strncmp(s + i, "C", 1))
+		return (get_rgb(s + i, &g->map->c_col));
 	return (1);
 }
 
-int	parse_config(t_game *game, char *filename)
+int	read_config(t_game *g, char *f)
 {
-	int		fd;
-	char	*line;
-	int count;
+	int fd;
+	char *s;
+	int ok;
 
-	fd = open(filename, O_RDONLY);
+	fd = open(f, O_RDONLY);
 	if (fd < 0)
 		return (0);
-	line = get_next_line(fd);
-	count = 0;
-	while (line)
+	ok = 1;
+	while (ok)
 	{
-		if (line[0] != '\n' && line[0] != ' ' && line[0] != '\t' && line[0] != '1')
+		s = get_next_line(fd);
+		if (!s)
+			break ;
+		if (is_map_line(s))
 		{
-			if (!parse_config_line(line, game))
-			{
-				free(line);
-				close(fd);
-				return (0);
-			}
-			else
-				count++;
+			free(s);
+			break ;
 		}
-		else if (line[0] == '0')
-			break;
-		printf("%s\n", line);
-		free(line);
-		line = get_next_line(fd);
+		if (s[0] != '\n')
+			ok = chk_line(s, g);
+		free(s);
 	}
-	if (line)
-		free(line);
+	clear_gnl_fd(fd);
 	close(fd);
-	return 1;
+	return (ok);
 }
+/*
+	NO SO WE EA ile başlayan satırları bulup duvar dokularının dosya yollarını kaydeder
+	F zemin ve C tavan satırlarını okur ve rgb değerlerini alır 
+	is map_line fonksiyonu ile haritada olabilecek satırları atlar
+	chk line fonksiyonu ile haritanın diğer satırlarını kontrol eder
+	
+*/

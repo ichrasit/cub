@@ -1,96 +1,86 @@
 #include "../Cub3D.h"
 #include <stdio.h>
 
-int	check_file_extension(char *filename)
-{
-	int	len;
 
-	if (!filename)
+int	chk_ext(char *s)
+{
+	int len;
+
+	if (!s)
 		return (0);
-	len = ft_strlen(filename);
+	len = ft_strlen(s);
 	if (len < 5)
 		return (0);
-	if (ft_strncmp(filename + len - 4, ".cub", 4) != 0)
-		return (0);
-	return (1);
+	return (ft_strncmp(s + len - 4, ".cub", 4) == 0);
 }
 
-int	error_exit(char *msg)
+static void	free_map(t_game *g)
 {
-	if (msg)
-	{
-		write(2, "Error\n", 6);
-		write(2, msg, ft_strlen(msg));
-		write(2, "\n", 1);
-	}
-	return (1);
-}
+	int i;
 
-void	free_game(t_game *game)
-{
-	int	i;
-
-	if (!game)
-		return ;
-	if (game->map && game->map->grid)
+	if (g->map && g->map->grid)
 	{
 		i = 0;
-		while (i < game->map->height)
-		{
-			if (game->map->grid[i])
-				free(game->map->grid[i]);
-			i++;
-		}
-		free(game->map->grid);
+		while (i < g->map->h)
+			free(g->map->grid[i++]);
+		free(g->map->grid);
 	}
-	if (game->map)
-		free(game->map);
-	if (game->player)
-		free(game->player);
-	free_textures(game);
-	if (game->texture)
-		free(game->texture);
-	if (game->ray)
-		free(game->ray);
-	if (game->keys)
-		free(game->keys);
-	if (game->screen && game->screen->img)
-		mlx_destroy_image(game->mlx, game->screen->img);
-	if (game->screen)
-		free(game->screen);
-	if (game->win)
-		mlx_destroy_window(game->mlx, game->win);
-	if (game->mlx)
-	{
-		mlx_destroy_display(game->mlx);
-		free(game->mlx);
-	}
+	if (g->map)
+		free(g->map);
+	if (g->plr)
+		free(g->plr);
+	if (g->ray)
+		free(g->ray);
+	if (g->key)
+		free(g->key);
 }
 
-int	main(int argc, char **argv)
+void	clean_exit(t_game *g, char *m, int c)
 {
-	t_game	game;
+	if (m)
+		ft_putendl_fd(m, 2);
+	free_map(g);
+	free_tex(g);
+	if (g->tex)
+		free(g->tex);
+	if (g->scr)
+	{
+		if (g->scr->ptr)
+			mlx_destroy_image(g->mlx, g->scr->ptr);
+		free(g->scr);
+	}
+	if (g->win)
+		mlx_destroy_window(g->mlx, g->win);
+	if (g->mlx)
+	{
+		mlx_destroy_display(g->mlx);
+		free(g->mlx);
+	}
+	exit(c);
+}
+int	end_game(t_game *g)
+{
+	clean_exit(g, NULL, 0);
+	return (0);
+}
 
-	if (argc != 2)
-		return (error_exit("Kullanım: ./cub3D <harita.cub>"));
-	if (!check_file_extension(argv[1]))
-		return (error_exit("Geçersiz dosya uzantısı. .cub dosyası gerekli"));
-	ft_bzero(&game, sizeof(t_game));
-	if (!parse_map(&game, argv[1]))
-	{
-		free_game(&game);
-		return (error_exit(ERR_MAP));
-	}
-	if (!init_game(&game))
-	{
-		free_game(&game);
-		return (error_exit("Oyun başlatma hatası"));
-	}
-	mlx_loop_hook(game.mlx, loop_hook, &game);
-	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
-	mlx_hook(game.win, 3, 1L << 1, key_release, &game);
-	mlx_hook(game.win, 17, 0, close_game, &game);
-	mlx_loop(game.mlx);
-	free_game(&game);
+int	main(int ac, char **av)
+{
+	t_game g;
+
+	if (ac != 2)
+		return (printf("Error\nUsage: ./cub3D maps/map.cub\n"), 1);
+	if (!chk_ext(av[1]))
+		return (printf("Error\nInvalid extension\n"), 1);
+	ft_bzero(&g, sizeof(t_game));
+	if (!parse_map(&g, av[1]))
+		clean_exit(&g, "Error\nMap parsing failed", 1);
+	if (!init_game(&g))
+		clean_exit(&g, "Error\nInitialization failed", 1);
+	mlx_loop_hook(g.mlx, render, &g);
+	mlx_hook(g.win, 2, 1L << 0, k_down, &g);
+	mlx_hook(g.win, 3, 1L << 1, k_up, &g);
+	mlx_hook(g.win, 17, 0, end_game, &g);
+	mlx_loop(g.mlx);
 	return (0);
 }

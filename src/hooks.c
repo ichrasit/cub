@@ -1,45 +1,38 @@
 #include "../Cub3D.h"
 
-int	key_press(int keycode, t_game *game)
+
+int	k_down(int k, t_game *g)
 {
-	if (keycode == KEY_ESC)
-		close_game(game);
-	else if (keycode == KEY_W)
-		game->keys->w = 1;
-	else if (keycode == KEY_S)
-		game->keys->s = 1;
-	else if (keycode == KEY_A)
-		game->keys->a = 1;
-	else if (keycode == KEY_D)
-		game->keys->d = 1;
-	else if (keycode == KEY_LEFT)
-		game->keys->left = 1;
-	else if (keycode == KEY_RIGHT)
-		game->keys->right = 1;
+	if (k == K_ESC)
+		end_game(g);
+	else if (k == K_W)
+		g->key->w = 1;
+	else if (k == K_S)
+		g->key->s = 1;
+	else if (k == K_A)
+		g->key->a = 1;
+	else if (k == K_D)
+		g->key->d = 1;
+	else if (k == K_LF)
+		g->key->l = 1;
+	else if (k == K_RT)
+		g->key->r = 1;
 	return (0);
 }
 
-int	key_release(int keycode, t_game *game)
+int	k_up(int k, t_game *g)
 {
-	if (keycode == KEY_W)
-		game->keys->w = 0;
-	else if (keycode == KEY_S)
-		game->keys->s = 0;
-	else if (keycode == KEY_A)
-		game->keys->a = 0;
-	else if (keycode == KEY_D)
-		game->keys->d = 0;
-	else if (keycode == KEY_LEFT)
-		game->keys->left = 0;
-	else if (keycode == KEY_RIGHT)
-		game->keys->right = 0;
-	return (0);
-}
-
-int	close_game(t_game *game)
-{
-	game->running = 0;
-	free_game(game);
-	exit(0);
+	if (k == K_W)
+		g->key->w = 0;
+	else if (k == K_S)
+		g->key->s = 0;
+	else if (k == K_A)
+		g->key->a = 0;
+	else if (k == K_D)
+		g->key->d = 0;
+	else if (k == K_LF)
+		g->key->l = 0;
+	else if (k == K_RT)
+		g->key->r = 0;
 	return (0);
 }

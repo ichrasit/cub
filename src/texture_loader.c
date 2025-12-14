@@ -1,79 +1,94 @@
 #include "../Cub3D.h"
 
-static t_img	*load_texture(void *mlx, char *path)
-{
-	t_img	*texture;
 
-	if (!path)
-		return (NULL);
-	texture = malloc(sizeof(t_img));
-	if (!texture)
-		return (NULL);
-	texture->img = mlx_xpm_file_to_image(mlx, path, 
-			&texture->width, &texture->height);
-	if (!texture->img)
-	{
-		free(texture);
-		return (NULL);
-	}
-	texture->addr = mlx_get_data_addr(texture->img, 
-			&texture->bits_per_pixel,
-			&texture->line_length, 
-			&texture->endian);
-	return (texture);
+void	calc_tx(t_game *g, t_img *t)
+{
+	t_plr *p;
+	t_ray *r;
+	double wx;
+
+	p = g->plr;
+	r = g->ray;
+	if (r->side == 0)
+		wx = p->py + r->pwd * r->rdy;
+	else
+		wx = p->px + r->pwd * r->rdx;
+	wx -= floor(wx);
+	r->tx = (int)(wx * (double)t->w);
+	if (r->side == 0 && r->rdx > 0)
+		r->tx = t->w - r->tx - 1;
+	if (r->side == 1 && r->rdy < 0)
+		r->tx = t->w - r->tx - 1;
 }
 
-int	load_textures(t_game *game)
+static t_img	*img_load(void *mlx, char *p)
 {
-	if (!game->texture->north_path || !game->texture->south_path ||
-		!game->texture->east_path || !game->texture->west_path)
+	t_img *t;
+
+	if (!p)
+		return (NULL);
+	t = malloc(sizeof(t_img));
+	if (!t)
+		return (NULL);
+	t->ptr = mlx_xpm_file_to_image(mlx, p, &t->w, &t->h);
+	if (!t->ptr)
+	{
+		free(t);
+		return (NULL);
+	}
+	t->addr = mlx_get_data_addr(t->ptr, &t->bpp, &t->len, &t->end);
+	return (t);
+}
+
+int	load_tex(t_game *g)
+{
+	t_tex *t;
+
+	t = g->tex;
+	if (!t->n_path || !t->s_path || !t->e_path || !t->w_path)
 		return (0);
-	game->texture->north = load_texture(game->mlx, game->texture->north_path);
-	if (!game->texture->north)
+	t->n = img_load(g->mlx, t->n_path);
+	if (!t->n)
 		return (0);
-	game->texture->south = load_texture(game->mlx, game->texture->south_path);
-	if (!game->texture->south)
+	t->s = img_load(g->mlx, t->s_path);
+	if (!t->s)
 		return (0);
-	game->texture->east = load_texture(game->mlx, game->texture->east_path);
-	if (!game->texture->east)
+	t->e = img_load(g->mlx, t->e_path);
+	if (!t->e)
 		return (0);
-	game->texture->west = load_texture(game->mlx, game->texture->west_path);
-	if (!game->texture->west)
+	t->w = img_load(g->mlx, t->w_path);
+	if (!t->w)
 		return (0);
 	return (1);
 }
 
-void	free_textures(t_game *game)
+static void	free_img(t_game *g, t_img *img)
 {
-	if (game->texture)
+	if (img)
 	{
-		if (game->texture->north_path)
-			free(game->texture->north_path);
-		if (game->texture->south_path)
-			free(game->texture->south_path);
-		if (game->texture->east_path)
-			free(game->texture->east_path);
-		if (game->texture->west_path)
-			free(game->texture->west_path);
-		if (game->texture->north && game->texture->north->img)
-		{
-			mlx_destroy_image(game->mlx, game->texture->north->img);
-			free(game->texture->north);
-		}
-		if (game->texture->south && game->texture->south->img)
-		{
-			mlx_destroy_image(game->mlx, game->texture->south->img);
-			free(game->texture->south);
-		}
-		if (game->texture->east && game->texture->east->img)
-		{
-			mlx_destroy_image(game->mlx, game->texture->east->img);
-			free(game->texture->east);
-		}
-		if (game->texture->west && game->texture->west->img)
-		{
-			mlx_destroy_image(game->mlx, game->texture->west->img);
-			free(game->texture->west);
-		}
+		if (img->ptr)
+			mlx_destroy_image(g->mlx, img->ptr);
+		free(img);
 	}
+}
+
+void	free_tex(t_game *g)
+{
+	t_tex *t;
+
+	t = g->tex;
+	if (!t)
+		return ;
+	if (t->n_path)
+		free(t->n_path);
+	if (t->s_path)
+		free(t->s_path);
+	if (t->e_path)
+		free(t->e_path);
+	if (t->w_path)
+		free(t->w_path);
+	free_img(g, t->n);
+	free_img(g, t->s);
+	free_img(g, t->e);
+	free_img(g, t->w);
 }
