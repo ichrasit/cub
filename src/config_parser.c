@@ -1,6 +1,10 @@
 #include "../Cub3D.h"
 
-
+/*
+	NO yazısından sonraki boşlukları atlar
+	Dosya yolunun nerede bittiğini belirler
+	Dosya yolunu için bellek ayırır ve kopyalar
+*/
 static int	get_path(char *s, char **p, int i)
 {
 	int len;
@@ -17,6 +21,11 @@ static int	get_path(char *s, char **p, int i)
 	return (1);
 }
 
+/*
+	sadece sayıları hesaplar
+	boşlukları atlar
+	ft_atoi ile sayıya çevirir
+*/
 static int	get_val(char *s, int *i)
 {
 	int n;
@@ -33,6 +42,19 @@ static int	get_val(char *s, int *i)
 	return (n);
 }
 
+/*
+	rgb değerlerini okuması gerekir
+	i = 1 çünkü f ve c karakterlerinden sonraki boşlukları atlamak için
+	get val ile r g b değerlerini alır
+	her değerin 0-255 arasında olup olmadığını kontrol eder
+
+	*c = (r << 16) | (g << 8) | b;
+	bu satır bilgisayar renkleri ile tek bir tamsayı int olarak saklar
+	kırmızı 16 bit sola kaydırılır
+	yeşil 8 bit sola kaydırılır
+	mavi olduğu gibi kalır
+	| or operatörü ile bunları birleştiririz sonuçta 0xRRGGBB formatında tek bir sayı oluşur.
+*/
 static int	get_rgb(char *s, int *c)
 {
 	int r;
@@ -52,16 +74,6 @@ static int	get_rgb(char *s, int *c)
 		return (0);
 	*c = (r << 16) | (g << 8) | b;
 	return (1);
-}
-
-static int	is_map_line(char *s)
-{
-	int i;
-
-	i = 0;
-	while (s[i] == ' ' || s[i] == '\t')
-		i++;
-	return (s[i] == '1' || s[i] == '0');
 }
 
 static int	chk_line(char *s, t_game *g)
@@ -116,10 +128,10 @@ int	read_config(t_game *g, char *f)
 	close(fd);
 	return (ok);
 }
+
 /*
 	NO SO WE EA ile başlayan satırları bulup duvar dokularının dosya yollarını kaydeder
 	F zemin ve C tavan satırlarını okur ve rgb değerlerini alır 
-	is map_line fonksiyonu ile haritada olabilecek satırları atlar
-	chk line fonksiyonu ile haritanın diğer satırlarını kontrol eder
-	
+	is_map_line fonksiyonu ile haritada olabilecek satırları atlar
+	chk_line fonksiyonu ile haritanın diğer satırlarını kontrol eder
 */

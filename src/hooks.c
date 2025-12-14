@@ -1,6 +1,5 @@
 #include "../Cub3D.h"
 
-
 int	k_down(int k, t_game *g)
 {
 	if (k == K_ESC)

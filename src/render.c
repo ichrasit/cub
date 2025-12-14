@@ -1,6 +1,5 @@
 #include "../Cub3D.h"
 
-
 void	my_px(t_img *img, int x, int y, int c)
 {
 	char *dst;

@@ -1,6 +1,5 @@
 #include "../Cub3D.h"
 
-
 static int	is_ok(char **g, int y, int x, t_map *m)
 {
 	if (y < 0 || y >= m->h || x < 0 || x >= m->w)
@@ -40,6 +39,13 @@ int	check_walls(char **g, int h, int w)
 	return (1);
 }
 
+/*
+	oyuncunun başlangıç yönünü ayarlar
+	bunu dx, dy, cx, cy değerlerini ayarlayarak yapar
+	yönü N,S,E,W olabilir
+	-1 ve 1 değerleri yön vektörünü belirler
+	cx ve cy ise kamera düzlemini belirler
+*/
 static void	set_dir(t_plr *p, char d)
 {
 	if (d == 'N')
@@ -64,6 +70,18 @@ static void	set_dir(t_plr *p, char d)
 	}
 }
 
+/*
+	Bu fonksiyon harita ızgarasında oyuncunun başlangıç pozisyonunu bulur
+	j x ekseni 
+	i y ekseni
+	harita ızgarasında oyuncunun başlangıç pozisyonunu bulur
+	oyuncunun px ve py pozisyonlarını ayarlar
+	dir yani bakış yönünü ayarlar
+	nsew karakterini 0 ile değiştirir çünkü haritanın bir parçası değil
+	Kısaca;
+	"Haritada oyuncu var mı?
+	Varsa: Ortasına koy, Yönünü ayarla, Raycasting'i kur, Haritadan sil, Çık"
+*/
 int	set_player(t_game *g)
 {
 	int i;
@@ -91,6 +109,16 @@ int	set_player(t_game *g)
 	return (0);
 }
 
+/*
+	harita belleğe alındı ancak hala oynamaya uygun mu bilinmiyor
+	bu fonksiyon haritanın geçerli olup olmadığını kontrol eder
+	geçerli karakterler mi var
+	haritada boşluklar var mı
+	harita duvarlarla çevrili mi
+	harita tek parça mı
+	oyuncu başlangıç pozisyonu ayarlanır
+	eğer tüm kontroller geçilirse harita geçerli olarak işaretlenir
+*/
 int	validate_and_init_map(t_game *g)
 {
 	if (!valid_chars(g->map))

@@ -1,6 +1,5 @@
 #include "../Cub3D.h"
 
-
 static int	start_mlx(t_game *g)
 {
 	g->mlx = mlx_init();
@@ -11,6 +10,7 @@ static int	start_mlx(t_game *g)
 		return (0);
 	return (1);
 }
+
 static int	make_screen(t_game *g)
 {
 	g->scr = malloc(sizeof(t_img));
@@ -25,6 +25,7 @@ static int	make_screen(t_game *g)
 	g->scr->h = WIN_H;
 	return (1);
 }
+
 static int	alloc_mem(t_game *g)
 {
 	g->ray = malloc(sizeof(t_ray));

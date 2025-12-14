@@ -1,6 +1,5 @@
 #include "../Cub3D.h"
 
-
 void	calc_tx(t_game *g, t_img *t)
 {
 	t_plr *p;

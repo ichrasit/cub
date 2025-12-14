@@ -1,6 +1,5 @@
 #include "../Cub3D.h"
 
-
 int	is_wall(t_game *g, double x, double y)
 {
 	int mx;

@@ -1,10 +1,13 @@
-#include "../Cub3D.h"
+/* ************************************************************************** */
 
+
+
+#include "../Cub3D.h"
 
 static int	chk_char(char c)
 {
-	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E' || c == 'W'
-		|| c == ' ' || c == '\n' || c == '\r');
+	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E'
+		|| c == 'W' || c == ' ' || c == '\n' || c == '\r');
 }
 
 static int	cnt_plr(char **g, int h)

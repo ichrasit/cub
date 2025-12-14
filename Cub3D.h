@@ -120,6 +120,12 @@ int		parse_map(t_game *g, char *f);
 int		read_config(t_game *g, char *f);
 char	*get_next_line(int fd);
 void	clear_gnl_fd(int fd);
+int		contiguous_map_block(char *f);
+int		is_map_line(char *s);
+int		is_map(char *s);
+int		get_dim(char *f, int *h, int *w);
+int		fill_grid(char *f, char **g, int h);
+char	**new_grid(int h, int w);
 
 // Validation
 int		valid_chars(t_map *m);

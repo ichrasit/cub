@@ -1,6 +1,5 @@
 #include "../Cub3D.h"
 
-
 static int	chk_void(char **m, int x, int y, t_map *mp)
 {
 	if (y == 0 || y == mp->h - 1 || x == 0 || x >= mp->w - 1)

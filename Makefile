@@ -30,19 +30,24 @@ MLX_FLAGS	= -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 # Source files
 SRC_FILES	= main.c \
 			  map_parser.c \
+			  map_parser_utils.c \
+			  map_contiguous.c \
+			  map_grid.c \
+			  map_dim.c \
 			  map_validation.c \
 			  map_check.c \
 			  flood_fill.c \
-		  flood_fill_utils.c \
+			  flood_fill_utils.c \
 			  get_next_line.c \
 			  init_game.c \
 			  hooks.c \
 			  render.c \
-		  raycast.c \
+			  raycast.c \
 			  texture_loader.c \
-		  config_parser.c \
-		  movement.c \
-		  movement_utils.c
+			  config_parser.c \
+			  movement.c \
+			  movement_utils.c \
+			  cleanup.c
 
 SRC			= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ			= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
