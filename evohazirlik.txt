@@ -1,0 +1,207 @@
+arguman kontrolu once arguman aliyorum ./cub3d ve maps/map.cub
+
+chkext gelen dosyanin isminin .cub ile bitip bitmedigini kontrolu
+
+startgame her sey yolundaysa baslatiyorum
+
+startgame icinde ilk is tgame yapisini bzero ile tertemiz yapiyorum
+garbage klalmiyor. parsing islemini baslatmak icin parsemap cagiriyorum
+bu fonksiyon ise 
+alloc structs ile once malloc kullanarak map ve plr ve tex icin yer aciliyor
+sonrasinda ise readconfig fonksiyonunda configparserda ki readconfig fonksiyonuna 
+git su dosyayi oku diyorum
+
+o da gnl kullanarak satir satir okuyor
+NO SO gibi yonleri gorunce dosya yollarini kaydediyor
+F veya C gorunce renkleri alip bit kaydirma ile tek bir sayiya donustuyor
+
+contigousmapblock ile config bitice harita tek parca mi diye fonksiyona soruyor eger haritanin
+ortasinda bos satir veya harita oynanabilir bir harita degilse oyunu orda durduruyor
+
+sonrasinda fillgrid fonksiyonu ile haritanin boyutlarini getdim ile olcup fillgrid ile haritayi
+char **grid'e kopyaliyorum
+
+
+Harita kopyalandi ama oynanmaya uygunmu degilmi bunun icin validateandinitmap fonksiyonu devreye
+giriyor
+
+validchars ile mapde 0 1 NSEW harici yabanci karakter var mi bunlara bakiyorum
+
+checkwalls ile haritanin kenarlari kapalimi diye hizli bir check
+checkflood ile yazmis oldugum iterative flood fill algoritmasini cagiriyorum. Haritanin bir
+kopyasini cikarip oyuncunun oldugu yerden bir su basiliyor eger su disari sizarsa harita delik desik
+hata veriyorum bunu yaparken stack overflow olmasin diye malloc ile kendi stack yapimi kullaniyorum
+
+setplayer ile her sey saglam ise haritada ki N veya SEW harfini buluyorum. Koordinatlarini px py
+kaydedip bakis yonunu dir ayarliyorum ve o harfi haritadan silip 0 yapiyorum ki yurunebilsin.
+
+init game parsing ve validasyon bitti map saglam artik grafik motoru acilabilir.
+
+start game artik init game cagiriyort
+
+mlx baslatma mlxinit ile kutuphaneyi baslatip mlxnewwindow ile penceremi aciyorum loadtex ile
+parsing asamasinda kayededilen .xpm dosya yollarini alip mlxxpmfiletoimage fonksiyonuyla
+gercek resimlere donustuyorum. Eger bir resim yuklenmez ise hata verip cikiyor
+
+Raycast hazirligi ise ray structini sifirlayip hazir hale getiriyorum
+
+setuphooks son olarak startgame icerisinde setuphooks fonksiyonunu cagiriyorum bu oyunun
+kalbinin attigi yer.
+
+mlxloophok her karede frame render fonksiyonunu calistir. Bu fonksiyon gidip ray yapip ekrani
+ciziyor
+
+mlxhook tuslara basinda kdown ve birakilinca kup ne yapacagini soyluyorum.
+
+mlxlopp ile program sonsuz bir donguye giriyor esc veya carpiya basilana kadar.
+
+
+
+mapdim haritanin boyutunu ogrendigimiz yer
+
+ismap satirin basinda ki bosluklari atlar ilk gorulen karater 1 veya 0 ise 
+bu harita satiri diyor
+
+getdim once dosyayi okumak ve olcmek icin aciyorum
+
+gnl ile sonuna kadar gidiyorum ismap ile harita satirlarini yakalayip h sayiyorum
+
+en uzun satiri bulup genisligi w ona esitliyorum dosya kapatip cikiyorum
+
+fillgrid boyutlari ogrendikten sonra dosyayi tekrar aciyorum basa sarmak icin
+satir satir okuyup olusturulan matrisin icine atiliyor/
+
+
+mapgrid dosya harita yamuk yumuk ama ben array kullaniyorum seg yemeden nasil erisiliyor?
+
+haritayi dikdortgen yapiyorum newgrid ile
+
+getdimden aldigim en buyuk genislik w ve yukseklik h kadar yer aciyorum.
+
+allocraw
+
+Burasi her satiri malloc ile en uzun satir kadar yer aciyom 
+
+sonra memset butun satirlari space ile dolduruyrum
+
+daha sonra fillgrid fonksiynu gelip haritayi bunun uzerine yaziyo
+boylece haritanin kalan kisimlari otomatik olarak boslukla dolmus oluyor yani ramde aslinda
+tam bir dikdortgen var.
+
+
+neden dosya 2 kere okunuyor tek seferde yapilmaz miydi?
+
+ben linked list kullanmadigim icin array kullandigim icin 2 kere okunuyor.
+
+get dim ile satirlari sayip en genis satir bulunuyor. Ikinci turda fillgrid ise veriyi dolduruyorum
+Bu yontem hafiza yontemi acisindan daha temiz 
+
+
+RGB kodlari 255 128 0 nasil tek bir int degiskeninde tutuluyor?
+
+bit islemleri ile. Her renk kanali 8 bittir. 0 - 255
+
+Kirmiziyi R en sola atmak icin 16 bit kaydiriyorum
+G ortaya almak icin 8 bit kaydiriyorum
+Maviyi oldugu gibi birakiyorum
+
+hepsini or ile birlestirince 0xRRGGBB formatinda tek bir sayi oluyor.
+
+
+Mapin ortasinda ki bosluk varsa noluyor? Oyuncu oraya girebilir mi?
+
+mapgrid ve floodfill dosyalarinda ki 0 zemin disindaki her sey duvardir veya bosluktur
+Ancak floodlfill algoritmasi oyuncunun yuruyebildigi 0 bir yerden baslayip yayiliyor. Eger bu
+yayilma harita sinirindaki bir bosluga space'e degerse harita acik, oyuncu bosluga dusebilir
+denilip hata verdiriyorum. Yani kapali alandaki space sorun degil ama disariya
+sizdiran space yasak.
+
+
+Texture dosyasi bozuksa veya yoksa program ne zaman patlar?
+
+textureloader dosyasinda ki parser asamasinda patlamaz cunku parser sadece dosya yolunu path
+string olarak kaydeder. Program initgame asamasina gecip mlxxpmfiletoimage fonksiyonunu cagirdiginda
+eger dosya bozuksa null doner. Ben de bu null sonucunu kontrol edip temiz bir sekilde cleanexit
+programi kapatirim. Yani segfault yemez.
+
+
+GNL fonksiyonunda neden statik dizi boyutu 1024? 5000 olsa ne olurdu?
+
+getnexline bu sayi unixlinux sistemlerinde ki bir processin acabilecegi varsayilan max dosya
+tanimlayicisi fd limitidir. ulimit -n 5000 yapabilirdim ama gereksiz hafiza kullanimi olurdu.
+Eger sistem bana 1025 numarali dosyayi verirse kodumda ki guvenlik kontrolu fd < 1024 sayesinde
+islem yapmayi reddeder ve cokmez
+
+
+Memory leak olmadigindan nasil bu kadar eminim?
+
+cleanup  Cunku last in first out mantigiyla temizlik yapiyorum.
+
+Oyunun en son olusturdugu goruntuleri mlxdestroyimage
+pencereyi mlxdestroywindow
+struct yapilarini ve texture yollarini
+en son da harita matrisini arrayini siliyorum. Her mallocun bir free karsiligi var valgrind ile de 
+test ettim.
+
+
+Haritanin parcali olup olmadigini contigousmapblock nasil anliyorsun?
+
+mapcontigious
+
+Bu bir durum makinesi state machine gibi dusundum. Okurken 3 durunm var;
+
+harita henuz baslatilmadi
+Harita basladi ilk 1 veya 0 goruldu
+Harita bitti harita satirindan sonra bos satir geldi. Eger 3.duruma gectikten sonra tekrar harita
+verisi gelirse harita iki parca demektir ve hata veririm.
+
+
+
+Karakterin duvara surtunerek slide gitmesini sagladim?
+
+move fonksiyonu duvar boyu kayabiliyor. Bunu saglamak icin x ve y ekseninde ki hareketleri ayri
+ayri ayri kontrol ettim.
+
+once x ekseninde gitmek istedigi yere bakiyorum. Duvar yoksa px'i guncelliyorum.
+sonra y ekseninde gitmek istedigi yere bakiyorum. Duvar yoksa py'yi guncelliyorum.
+
+Bu sayede duvara capraz girdigimde karakter takilmiyor, duvar boyunca kaymaya devam ediyor.
+
+
+Oyuncu koordinatlari icin neden double kullandim? Harita int degil mi?
+
+
+Evet harita karelerden olusuyor Grid ve indeksi int olmak zorunda. Ama oyuncunun harekti akici
+smooth olmali
+
+Eger oyuncunun pozisyonu int yapsaydim karakter kare kare ziplardi. Minecraftaki blok hareketi/
+
+Ben dobule tutuyorum. Ornegin 3.5 4.2 gibi. Ama duvara carpip carpmadigini kontrol ederken iswall
+bu degeri int'e cast edip haritadaki hangi kareye denk geldigine bakiyorum.
+
+
+Sola saga donus rotate fonksiyonunda neden hem dx dy hem de cx cy degisiyor?
+
+Cunku kamera bit butun. Sadece bakis yonumu dir vector cevirirsem, kamera duzlemim plane vector
+sabit kalir ve goruntu yamulur. FOV bozulur.
+
+Bu yuzden rotasyon matrisi formulunu x = x*cos - y*sin kullanirak hem yon vektorumu hem de kamera
+duzlemini ayni acida donduruyorum. Boylece kamera bozulmadan donuyor.
+
+
+.cub dosyasinda harita map satirlari texturelardan once gelirse ne olur?
+
+Hata verir veya texturelari okumaz. Cunku benim readconfig fonksiyonum satirlari okurken
+eger bir harita satiri 1 veya 0 ile baslayan gorurse donguyu kiriyor break
+
+bu yuzden map blogu dosyanin en sonunda olmak zorunda. Once ayarlar, sonra harita.
+
+
+Hafiza temizliginde free sirasi onemlimi?
+
+Kesinlikle ornegin mlx pointerini window veya imagelari yok etmeden once free yaparsam, mlxdestroywindow
+fonksiynu gecersiz bir adrese erismeye calisir ve seg yerim.
+
+O yuzden ters piramit mantigiyla once en son olusturulanlar image window display sonra da en son 
+ana yapiyi mlx ptr temizliyorum.
+

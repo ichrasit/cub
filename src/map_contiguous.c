@@ -78,6 +78,13 @@ static int	check_loop(int fd, int *started, int *gap)
 	}
 	return (1);
 }
+/*
+	get ile dosyayi okur
+	harita icerisinde bosluk var mi kontrol ediyor icerigi uygunmu diye
+	process line ile
+	gap 1 ise harita modundayken bos satir geldi
+	dosya biterse veya baska config 
+*/
 
 int	contiguous_map_block(char *f)
 {
@@ -96,3 +103,9 @@ int	contiguous_map_block(char *f)
 	close(fd);
 	return (result);
 }
+/* contiguous_map_block 
+
+	Bu fonksiyon harita butunlugunu kontrol eder
+	Harita icersinde bosluk var mi yokmu kontrol eder
+
+*/
