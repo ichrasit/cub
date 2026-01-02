@@ -205,3 +205,57 @@ fonksiynu gecersiz bir adrese erismeye calisir ve seg yerim.
 O yuzden ters piramit mantigiyla once en son olusturulanlar image window display sonra da en son 
 ana yapiyi mlx ptr temizliyorum.
 
+
+Tuslara basinca keypress karakteri neden hemen hareket ettirmiyorum w = 1 diye bir flag aciyoruz?
+
+Akici hareket smooth icin
+
+Eger mlxhook icinde hareket ettirseydim tusa basili tuttugumda isletim sisteminin tus tekrari
+key repeat gecikmesi devreye girerdi. Karakter once duraksar sonra gitmeye baslardi takilma hissi.
+
+Ben bunun yerine: Tusa basinca gaz pedalina basildi w = 1 cekince cekildi  w = 0 diyorum.
+
+render dongusu mlxloophok her calistiginda bu bayraklara bakip hareket ettiriyor. Boylece yag
+gibi kayan bir hareket elde ediyorum.
+
+
+Duvar dokularini xpm yukledikten sonra neden mlxgetdataddr fonksiyonu cagriliyor? Resim zaten
+elimizde degil mi?
+
+Resim t_img *ptr elimde ama piksellere erisemiyorum. mlxgetdataddr bana o resmin ham bellek adresini
+memory address veriyor. Raycasting yaparken duvarin o noktasina denk gelen pikselin rengini int 
+bu adresten matematiksel olarak hesaplayip aliyorum texture mapping. Adres olmadan piksellere tek tek
+dokunamam.
+
+
+Parser kisminda haritanin kapali oldugundan %100 duvarla cevirli neden bu kadar emin olmak zorundayiz?
+Raycasting de kontrol etsen olmaz mi?
+
+Performans ve guvenlik icin. Raycasting dongusu saniyede 60 kez, ekran genisligi kadar orn 1920 isin
+atiyor. Her isin atisinda haritaniun disina ciktim mi? diye bir sinir kontrolu if x < 0 || x > w
+yapmak fps dusurebilir.
+
+Eger parser asamasinda haritanin kapali oldugunu garanti edersem, isinlar sonsuza kadar gitmez
+mutlaka bir duvara 1 carpar. Boylece raycaster icinde sinir kontrolu yapmama gerek kalmaz veya
+daha az yaparim ve segfault riski sifirlanir.
+
+
+Config dosyasinda ayni doku yolu ornegin NO iki kere yazilmissa ne olur?
+
+Benim parser mantigima gore son gelen gecerli olur ama burada dikkat edilmesi gereken sey memory
+leak. Eger NO ./path1 okudum, malloc yaptim. Sonra tekrar NO ./path2 gelirse, onceki mallocu free
+yapmadan uzerine yazarsam leak olusur.
+
+Bu yuzden kodda chkline fonksiyonu, eger o yon gtexnpath zaten dolu ise once hata verip veya temizleyip
+oyle islem yapmali. 
+
+floodfill yapilirken haritanin bir kopyasini duparr aliyoruz. Neden orjinal harita uzerinde yapilmiyor?
+
+Cunku floodfill algoritmasi gectigi yerleri isaretler. F karakteri boyar gibi.
+
+Eger orjinal haritada yaparsam, validasyon bittiginde haritam F harfleri ile dolu kalir.
+Oyunu baslatinca her yer bozulmus olur.
+
+Kopya uzerinde test ediyorum, Tamam bu harita safe diyorum ve kopyayi cope atip orjinal temiz harita ile
+oyunu baslatiyorum.
+

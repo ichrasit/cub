@@ -134,3 +134,13 @@ int	validate_and_init_map(t_game *g)
 	g->map->ok = 1;
 	return (1);
 }
+
+/*
+	Bu fonksiyon map butunlugu saglandiktan sonra yapilan islemdir. Map parse edildikten sonra buraya gelir ki artik map oynamaya hazir hale gelsin.
+	Ilk once valid_chars fonksiyonuna gider. Bu fonksiyon mapte istenilen karakterler var mi bunlari kontrol eder, Eger yoksa 0 doner.
+	Daha sonrasinda ise no_empty_gaps calisir. Bu fonksiyon map icerisinde herhangi bir yerde bosluk var mi harita butunlugu saglaniyor mu bunlari kontrol ediyor.
+	Bundan sonra ise check_walls fonksiyonu calisir. Bu fonksiyon oyuncunun baslangic yonunu ayarlar. NSEW bu yonlerden biridir bu yon.
+	Bu islemden sonra ise check_flood fonksiyonu calisir. Bu fonksiyon flood_fillin baslangicidir.
+	En sonda ise set_player calisir. Bu fonksiyon flood_fillden sonra harita heap'e alindi fakat hala kesin olarak oynanabilinir mi emin degiliz bunlari kontrol edip oyuncuyu oyuna hazirlar.
+	SOnrasinda ise map artik oynanmaya hazirdir ve flag 1 yapilir fonksiyon 1 OK dondurur.
+*/

@@ -51,3 +51,13 @@ int	init_game(t_game *g)
 		return (0);
 	return (1);
 }
+
+/*
+	Bu fonksiyon oyunu initialize baslamaya hazir hale getirir.
+	Oncelikle start_mlx fonksiyonu calisir. Bu fonksiyon pencereyi acar ve mlx kutuphanesini baslatir.
+	Sonrasinda make_screen fonksiyonu calisir. Bu fonksiyon windowu ayarlar ve pikselleri ayarlar.
+	Daha sonrasinda degiskenler allocate edilir. 
+	En son ise texturelar bastirilir.
+	
+
+*/
