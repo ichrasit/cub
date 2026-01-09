@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_check.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: htekdemi <htekdemi@student.42kocaeli.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/09 18:56:54 by htekdemi          #+#    #+#             */
+/*   Updated: 2026/01/09 18:56:54 by htekdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Cub3D.h"
 
 static int	is_ok(char **g, int y, int x, t_map *m)
@@ -39,13 +51,6 @@ int	check_walls(char **g, int h, int w)
 	return (1);
 }
 
-/*
-	oyuncunun başlangıç yönünü ayarlar
-	bunu dx, dy, cx, cy değerlerini ayarlayarak yapar
-	yönü N,S,E,W olabilir
-	-1 ve 1 değerleri yön vektörünü belirler
-	cx ve cy ise kamera düzlemini belirler
-*/
 static void	set_dir(t_plr *p, char d)
 {
 	if (d == 'N')

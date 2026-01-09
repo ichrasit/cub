@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_game.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: htekdemi <htekdemi@student.42kocaeli.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/09 18:56:44 by htekdemi          #+#    #+#             */
+/*   Updated: 2026/01/09 18:56:44 by htekdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Cub3D.h"
 
 static int	start_mlx(t_game *g)
@@ -51,13 +63,3 @@ int	init_game(t_game *g)
 		return (0);
 	return (1);
 }
-
-/*
-	Bu fonksiyon oyunu initialize baslamaya hazir hale getirir.
-	Oncelikle start_mlx fonksiyonu calisir. Bu fonksiyon pencereyi acar ve mlx kutuphanesini baslatir.
-	Sonrasinda make_screen fonksiyonu calisir. Bu fonksiyon windowu ayarlar ve pikselleri ayarlar.
-	Daha sonrasinda degiskenler allocate edilir. 
-	En son ise texturelar bastirilir.
-	
-
-*/

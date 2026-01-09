@@ -1,10 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_dim.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: htekdemi <htekdemi@student.42kocaeli.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/09 18:57:02 by htekdemi          #+#    #+#             */
+/*   Updated: 2026/01/09 18:57:03 by htekdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Cub3D.h"
 
-/*
-	Bir satırın haritaya mı ait olduğunu yoksa ayar satırı mı olduğunu kontrol eder
-	satırda ki boşlukları atlar
-	eğer satır 1 veya 0 ile başlıyorsa harita satırıdır
-*/
 int	is_map(char *s)
 {
 	int i;
@@ -49,11 +56,6 @@ int	get_dim(char *f, int *h, int *w)
 	return (1);
 }
 
-/*
-	new_grid ile hazırlanan içi boş ızgarayı dosyadaki gerçek harita verisini işlemek
-	get_next_line ile dosyadan satır satır okur
-	her satırı new_line'a kadar kopyalar
-*/
 int	fill_grid(char *f, char **g, int h)
 {
 	int		fd;

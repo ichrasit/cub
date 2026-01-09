@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   flood_fill.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: htekdemi <htekdemi@student.42kocaeli.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/09 18:56:35 by htekdemi          #+#    #+#             */
+/*   Updated: 2026/01/09 18:56:35 by htekdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Cub3D.h"
 
 static int	chk_void(char **m, int x, int y, t_map *mp)
@@ -61,11 +73,10 @@ static void	run_algo(char **tab, t_map *m, int x, int y)
 		if(tab[c.y][c.x] == '1' || tab[c.y][c.x] == 'F' || tab[c.y][c.x] == ' ')
 			continue;
 		tab[c.y][c.x] = 'F';
-		add_pt(s, &t, c.x + 1, c.y);
+        add_pt(s, &t, c.x + 1, c.y);
 		add_pt(s, &t, c.x - 1, c.y);
 		add_pt(s, &t, c.x, c.y + 1);
 		add_pt(s, &t, c.x, c.y - 1);
-	
 	}
 	free(s);
 }

@@ -1,13 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_parser.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: htekdemi <htekdemi@student.42kocaeli.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/09 18:45:34 by htekdemi          #+#    #+#             */
+/*   Updated: 2026/01/09 18:45:34 by htekdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Cub3D.h"
 
-/*
-	parse map fonksiyonu oyun verileri için hafızada yer ayırır
-	read config fonksiyonu ile duvar ve renk bilgilerini okur
-	contiguous map block fonksiyonu ile harita da sızıntı var mı kontrol eder
-	fill grid fonksiyonu haritanın boyutu ölçülür ve hafızaya kaydedilir.
-	get dim fonksiyonu haritanın genişlik ve yükseklik değerlerini alır.
-	validate and init map harita doğru mu ve player durumunu kontrol eder.
-*/
 static int	alloc_structs(t_game *g)
 {
 	g->map = malloc(sizeof(t_map));
@@ -42,10 +46,3 @@ int	parse_map(t_game *g, char *f)
 		return (0);
 	return (validate_and_init_map(g));
 }
-/*
-	Buraya gelen parametreler oncelikle alloc_sturcts fonksiyonuna yollanir. Bu fonksiyon struct icerisinde ki degerlerime heap uzerinde allocate islemi yapar.
-	Daha sonrasinda ise read_config fonksiyonu calisir. Bu fonksiyon yonleri kontrol eder ve map duvarlar ile kaplimi diye bakar. Bu kontrollerde hata var ise 0 doner.
-	Daha sonrasinda ise contiguous_map_block fonksiyonuma gonderirim. Bu fonksiyon haritanin butunlugunu kontrol eder. Eger harita hatali ise burada her sey biter ve hata verilir.
-	Daha sonrasinda ise new_grid fonksiyonu sayesinde yeni bir grid acilir. Bilgisayar belleginde dikdortgen bir grid acildiktan sonra ise artik map oynanabilir demektir.
-	En son elimizde olan map'i validate_and_init_map fonksiyonuna yollariz bu fonksiyon mapi onaylar ve initialize yapar.
-*/

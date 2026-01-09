@@ -1,13 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_contiguous.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: htekdemi <htekdemi@student.42kocaeli.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/09 18:56:59 by htekdemi          #+#    #+#             */
+/*   Updated: 2026/01/09 18:57:00 by htekdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Cub3D.h"
 
-/*
-	bir harita dosyasında harita karakterleri 1, 0, N, vs. bir bütün halinde olmalıdır.
-	Eğer haritanın ortasında boş bir satır bırakılırsa oyun motoru bunu iki ayrı ada gibi algılar.
-	Oyuncu boşlukta yürüyebilir. Bu fonksiyon haritanın tek parça olup olmadığını kontrol eder.
-	Haritanın bütünlüğünü kontrol eder.
-	eğer harita ortasında boşluk varsa 0 döner.
-	eğer boşluktan sonra tekrar harita satırı görürse bu harita ikiye bölünmüştür hata döner
-*/
 static int	is_blank_line(char *s)
 {
 	int i;
@@ -78,13 +82,6 @@ static int	check_loop(int fd, int *started, int *gap)
 	}
 	return (1);
 }
-/*
-	get ile dosyayi okur
-	harita icerisinde bosluk var mi kontrol ediyor icerigi uygunmu diye
-	process line ile
-	gap 1 ise harita modundayken bos satir geldi
-	dosya biterse veya baska config 
-*/
 
 int	contiguous_map_block(char *f)
 {
@@ -103,9 +100,3 @@ int	contiguous_map_block(char *f)
 	close(fd);
 	return (result);
 }
-/* contiguous_map_block 
-
-	Bu fonksiyon harita butunlugunu kontrol eder
-	Harita icersinde bosluk var mi yokmu kontrol eder
-
-*/

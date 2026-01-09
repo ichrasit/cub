@@ -1,11 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_grid.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: htekdemi <htekdemi@student.42kocaeli.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/09 18:45:19 by htekdemi          #+#    #+#             */
+/*   Updated: 2026/01/09 18:45:20 by htekdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Cub3D.h"
 
-/*
-	Bilgisayarın belleğinde haritamız için dikdörtgen şeklinde bir ızgara oluşturmak için var
-	Ancak .cub dosyasında ki harita satırları her zaman eşit uzunlukta olmayabilir.
-	Bizim grid yapımız ise programda kolay işlem yapabilmek için dikdörtgen olmalı.
-	Bu fonksiyon, kısa satırları boşluk ile doldurarak hepsini en uzun satırın uzunluğuna eşitler.
-*/
 static char	**alloc_grid(int h)
 {
 	char	**g;

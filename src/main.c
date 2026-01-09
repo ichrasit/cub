@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: htekdemi <htekdemi@student.42kocaeli.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/09 18:56:50 by htekdemi          #+#    #+#             */
+/*   Updated: 2026/01/09 18:56:50 by htekdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Cub3D.h"
 #include <stdio.h>
 
@@ -36,19 +48,6 @@ static int	start_game(char *map_file)
 	return (0);
 }
 
-/*
-	bu fonksiyon oyunu baslatir yani baslatmaya hazirlar yavas yavas.
-	parse map fonksiyonuna mainden gelen av1'i yollar.
-	parse map fonksiyonu mapde bir sorun var mi? 
-	Map kurallara uygun mu yer yon bilgisi var mi bu gibi durumlari kontrol eder
-	buradan gelen deger olumsuz ise hata verir fakat parse mapde bir allocate yapildigi icin clean_exit fonksiyonu ile cikis yapiyorum.
-	init_game fonksiyonuma gonderiyorum burada bu fonksiyon struct yapimi initialize eder.
-	Fakat burada da bir hata durumu olursa yine clean_exit atarim. Cunku allocate yaptik.
-	Daha sonrasinda ise setup_hooks calisir.
-	Burada raycasting ve klavye durumlari event hook icerisine alinir. Tipki bir activity monitor gibi. Bir loop degildir fakat oyun acik oldugu muddetce klavyeyi dinler.
-	Buradan sonra ise oyunun surekli acik kalmasi icin mlx_loop calisir.
-
-*/
 int	main(int ac, char **av)
 {
 	if (ac != 2)
@@ -57,10 +56,3 @@ int	main(int ac, char **av)
 		return (printf("Error\nInvalid extension\n"), 1);
 	return (start_game(av[1]));
 }
-
-/*
-	eger arguman sayim iki degilse hata verir
-	dosya uzantisi kontrol ettigim fonksiyona argumani mi yollarim.
-	gelen deger yoksa hata verir.
-	sonrasinda her sey yolundadir ve start game fonksiyonuma gider.
-*/
