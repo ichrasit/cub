@@ -128,6 +128,14 @@ typedef struct s_pt
 	int		y;
 }	t_pt;
 
+typedef struct s_ff
+{
+	char	**tab;
+	t_map	*m;
+	t_pt	*s;
+	int		t;
+}	t_ff;
+
 int		init_game(t_game *g);
 int		end_game(t_game *g);
 void	clean_exit(t_game *g, char *m, int c);
@@ -153,6 +161,7 @@ int		check_flood(t_map *m);
 char	**dup_arr(t_map *m);
 void	free_arr(char **a, int h);
 int		find_pos(t_map *m, int *x, int *y);
+int		scan_filled(char **m, t_map *mp);
 
 int		load_tex(t_game *g);
 void	free_tex(t_game *g);
