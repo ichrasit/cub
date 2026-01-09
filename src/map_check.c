@@ -1,0 +1,116 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_check.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: htekdemi <htekdemi@student.42kocaeli.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/09 18:56:54 by htekdemi          #+#    #+#             */
+/*   Updated: 2026/01/09 18:56:54 by htekdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../Cub3D.h"
+
+static int	is_ok(char **g, int y, int x, t_map *m)
+{
+	if (y < 0 || y >= m->h || x < 0 || x >= m->w)
+		return (0);
+	if (g[y][x] == ' ' || g[y][x] == '\0')
+		return (0);
+	return (1);
+}
+
+int	check_walls(char **g, int h, int w)
+{
+	int		i;
+	int		j;
+	t_map	m;
+
+	m.h = h;
+	m.w = w;
+	i = -1;
+	while (++i < h)
+	{
+		j = -1;
+		while (++j < w && g[i][j])
+		{
+			if (!ft_strchr("0NSEW", g[i][j]))
+				continue ;
+			if (i == 0 || i == m.h - 1)
+				return (0);
+			if (!is_ok(g, i - 1, j, &m) || !is_ok(g, i + 1, j, &m))
+				return (0);
+			if (!is_ok(g, i, j - 1, &m) || !is_ok(g, i, j + 1, &m))
+				return (0);
+		}
+	}
+	return (1);
+}
+
+static void	set_dir(t_plr *p, char d)
+{
+	if (d == 'N')
+	{
+		p->dy = -1;
+		p->cx = 0.66;
+	}
+	else if (d == 'S')
+	{
+		p->dy = 1;
+		p->cx = -0.66;
+	}
+	else if (d == 'E')
+	{
+		p->dx = 1;
+		p->cy = 0.66;
+	}
+	else if (d == 'W')
+	{
+		p->dx = -1;
+		p->cy = -0.66;
+	}
+}
+
+int	set_player(t_game *g)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < g->map->h)
+	{
+		j = 0;
+		while (g->map->grid[i][j])
+		{
+			if (ft_strchr("NSEW", g->map->grid[i][j]))
+			{
+				g->plr->px = (double)j + 0.5;
+				g->plr->py = (double)i + 0.5;
+				g->plr->dir = g->map->grid[i][j];
+				set_dir(g->plr, g->map->grid[i][j]);
+				g->map->grid[i][j] = '0';
+				return (1);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	validate_and_init_map(t_game *g)
+{
+	if (!valid_chars(g->map))
+		return (0);
+	if (!no_empty_gaps(g->map))
+		return (0);
+	if (!check_walls(g->map->grid, g->map->h, g->map->w))
+		return (0);
+	if (!check_flood(g->map))
+		return (0);
+	if (!set_player(g))
+		return (0);
+	g->map->ok = 1;
+	return (1);
+}
