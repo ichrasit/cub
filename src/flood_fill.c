@@ -17,7 +17,7 @@
 
 static int	chk_void(char **m, int x, int y, t_map *mp)
 {
-	if (y == 0 || x == mp->h - 1 || x == 0 || x >= mp->w - 1)
+	if (y == 0 || y == mp->h - 1 || x == 0 || x >= mp->w - 1)
 		return (0);
 	if (m[y - 1][x] == ' ' || m[y + 1][x] == ' ' || m[y][x - 1] == ' ' || m[y][x
 		+ 1] == ' ')

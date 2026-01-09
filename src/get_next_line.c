@@ -88,6 +88,8 @@ static char	*update_buffer(char *buffer)
 	int		i;
 	int		j;
 
+	if (!buffer)
+		return (NULL);
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
