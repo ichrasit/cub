@@ -14,8 +14,8 @@
 
 int	is_wall(t_game *g, double x, double y)
 {
-	int mx;
-	int my;
+	int	mx;
+	int	my;
 
 	mx = (int)x;
 	my = (int)y;
@@ -28,10 +28,10 @@ int	is_wall(t_game *g, double x, double y)
 
 static void	move(t_game *g, double d)
 {
-	double nx;
-	double ny;
-	double sx;
-	double sy;
+	double	nx;
+	double	ny;
+	double	sx;
+	double	sy;
 
 	sx = g->plr->dx * MOV_SPD * d;
 	sy = g->plr->dy * MOV_SPD * d;

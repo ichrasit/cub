@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parser_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: htekdemi <htekdemi@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: muhaoz <muhaoz@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:45:23 by htekdemi          #+#    #+#             */
-/*   Updated: 2026/01/09 18:45:24 by htekdemi         ###   ########.fr       */
+/*   Updated: 2026/01/09 20:24:55 by muhaoz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_map_line(char *s)
 {
-	int i;
+	int	i;
 
 	if (!s)
 		return (0);

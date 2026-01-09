@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_validation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: htekdemi <htekdemi@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: muhaoz <muhaoz@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:45:47 by htekdemi          #+#    #+#             */
-/*   Updated: 2026/01/09 18:45:47 by htekdemi         ###   ########.fr       */
+/*   Updated: 2026/01/09 20:24:55 by muhaoz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static int	chk_char(char c)
 
 static int	cnt_plr(char **g, int h)
 {
-	int i;
-	int j;
-	int n;
+	int	i;
+	int	j;
+	int	n;
 
 	n = 0;
 	i = 0;
@@ -42,8 +42,8 @@ static int	cnt_plr(char **g, int h)
 
 int	valid_chars(t_map *m)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	if (!m || !m->grid)
 		return (0);
@@ -66,7 +66,7 @@ int	valid_chars(t_map *m)
 
 static int	row_has_nonspace(char *row)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (row[i])
@@ -80,9 +80,9 @@ static int	row_has_nonspace(char *row)
 
 int	no_empty_gaps(t_map *m)
 {
-	int i;
-	int seen;
-	int gap;
+	int	i;
+	int	seen;
+	int	gap;
 
 	if (!m || !m->grid)
 		return (0);

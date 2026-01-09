@@ -14,8 +14,8 @@
 
 void	my_px(t_img *img, int x, int y, int c)
 {
-	char *dst;
-	int off;
+	char	*dst;
+	int		off;
 
 	if (x < 0 || x >= WIN_W || y < 0 || y >= WIN_H)
 		return ;
@@ -26,8 +26,8 @@ void	my_px(t_img *img, int x, int y, int c)
 
 static int	get_col(t_img *t, int x, int y)
 {
-	char *src;
-	int off;
+	char	*src;
+	int		off;
 
 	if (x < 0 || x >= t->w || y < 0 || y >= t->h)
 		return (0);
@@ -38,10 +38,10 @@ static int	get_col(t_img *t, int x, int y)
 
 static void	bg(t_game *g)
 {
-	int x;
-	int y;
-	int c;
-	int f;
+	int	x;
+	int	y;
+	int	c;
+	int	f;
 
 	c = g->map->c_col;
 	f = g->map->f_col;
@@ -63,11 +63,11 @@ static void	bg(t_game *g)
 
 static void	draw(t_game *g, int x, t_img *t)
 {
-	int y;
-	int ty;
-	int c;
-	double step;
-	double pos;
+	int		y;
+	int		ty;
+	int		c;
+	double	step;
+	double	pos;
 
 	step = 1.0 * t->h / g->ray->lh;
 	pos = (g->ray->ds - WIN_H / 2 + g->ray->lh / 2) * step;
@@ -86,8 +86,8 @@ static void	draw(t_game *g, int x, t_img *t)
 
 int	render(t_game *g)
 {
-	int x;
-	t_img *t;
+	int		x;
+	t_img	*t;
 
 	inputs(g);
 	bg(g);

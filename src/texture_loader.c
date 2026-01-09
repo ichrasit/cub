@@ -14,9 +14,9 @@
 
 void	calc_tx(t_game *g, t_img *t)
 {
-	t_plr *p;
-	t_ray *r;
-	double wx;
+	t_plr	*p;
+	t_ray	*r;
+	double	wx;
 
 	p = g->plr;
 	r = g->ray;
@@ -34,7 +34,7 @@ void	calc_tx(t_game *g, t_img *t)
 
 static t_img	*img_load(void *mlx, char *p)
 {
-	t_img *t;
+	t_img	*t;
 
 	if (!p)
 		return (NULL);
@@ -53,7 +53,7 @@ static t_img	*img_load(void *mlx, char *p)
 
 int	load_tex(t_game *g)
 {
-	t_tex *t;
+	t_tex	*t;
 
 	t = g->tex;
 	if (!t->n_path || !t->s_path || !t->e_path || !t->w_path)
@@ -85,7 +85,7 @@ static void	free_img(t_game *g, t_img *img)
 
 void	free_tex(t_game *g)
 {
-	t_tex *t;
+	t_tex	*t;
 
 	t = g->tex;
 	if (!t)

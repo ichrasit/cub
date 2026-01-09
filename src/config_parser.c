@@ -14,7 +14,7 @@
 
 static int	get_path(char *s, char **p, int i)
 {
-	int len;
+	int	len;
 
 	while (s[i] && (s[i] == ' ' || s[i] == '\t'))
 		i++;
@@ -30,7 +30,7 @@ static int	get_path(char *s, char **p, int i)
 
 static int	get_val(char *s, int *i)
 {
-	int n;
+	int	n;
 
 	while (s[*i] && (s[*i] == ' ' || s[*i] == '\t'))
 		(*i)++;
@@ -46,10 +46,10 @@ static int	get_val(char *s, int *i)
 
 static int	get_rgb(char *s, int *c)
 {
-	int r;
-	int g;
-	int b;
-	int i;
+	int	r;
+	int	g;
+	int	b;
+	int	i;
 
 	i = 1;
 	r = get_val(s, &i);
@@ -67,7 +67,7 @@ static int	get_rgb(char *s, int *c)
 
 static int	chk_line(char *s, t_game *g)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s[i] == ' ' || s[i] == '\t')
@@ -91,9 +91,9 @@ static int	chk_line(char *s, t_game *g)
 
 int	read_config(t_game *g, char *f)
 {
-	int fd;
-	char *s;
-	int ok;
+	int		fd;
+	char	*s;
+	int		ok;
 
 	fd = open(f, O_RDONLY);
 	if (fd < 0)

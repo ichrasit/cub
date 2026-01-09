@@ -13,10 +13,9 @@
 #include "../Cub3D.h"
 #include <stdio.h>
 
-
 int	chk_ext(char *s)
 {
-	int len;
+	int	len;
 
 	if (!s)
 		return (0);
@@ -36,7 +35,7 @@ static void	setup_hooks(t_game *g)
 
 static int	start_game(char *map_file)
 {
-	t_game g;
+	t_game	g;
 
 	ft_bzero(&g, sizeof(t_game));
 	if (!parse_map(&g, map_file))

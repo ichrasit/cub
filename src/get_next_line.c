@@ -110,27 +110,24 @@ static char	*update_buffer(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	char		*temp;
-	char		*line;
-	int			bytes_read;
+	char	*temp;
+	char	*line;
+	int		rd;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= 1024)
 		return (NULL);
 	temp = malloc(BUFFER_SIZE + 1);
 	if (!temp)
 		return (NULL);
-	bytes_read = 1;
-	while (bytes_read > 0 && (!g_buffer[fd] || !ft_strchr(g_buffer[fd], '\n')))
+	rd = 1;
+	while (rd > 0 && (!g_buffer[fd] || !ft_strchr(g_buffer[fd], '\n')))
 	{
-		bytes_read = read(fd, temp, BUFFER_SIZE);
-		if (bytes_read < 0)
+		rd = read(fd, temp, BUFFER_SIZE);
+		if (rd > 0)
 		{
-			free(temp);
-			clear_gnl_fd(fd);
-			return (NULL);
+			temp[rd] = '\0';
+			g_buffer[fd] = ft_strjoin_gnl(g_buffer[fd], temp);
 		}
-		temp[bytes_read] = '\0';
-		g_buffer[fd] = ft_strjoin_gnl(g_buffer[fd], temp);
 	}
 	free(temp);
 	line = extract_line(g_buffer[fd]);

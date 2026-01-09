@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_contiguous.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: htekdemi <htekdemi@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: muhaoz <muhaoz@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 18:56:59 by htekdemi          #+#    #+#             */
-/*   Updated: 2026/01/09 18:57:00 by htekdemi         ###   ########.fr       */
+/*   Updated: 2026/01/09 20:24:55 by muhaoz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	is_blank_line(char *s)
 {
-	int i;
+	int	i;
 
 	if (!s)
 		return (1);
