@@ -12,7 +12,7 @@
 
 NAME		= cub3D
 
-CC			= gcc
+CC			= cc
 CFLAGS		= -Wall -Wextra -Werror -g
 RM			= rm -f
 
