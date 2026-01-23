@@ -45,6 +45,8 @@ SRC_FILES	= main.c \
 			  raycast.c \
 			  texture_loader.c \
 			  config_parser.c \
+			  config_parser_utils.c \
+			  config_parser_check.c \
 			  movement.c \
 			  movement_utils.c \
 			  cleanup.c

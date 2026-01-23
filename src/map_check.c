@@ -101,6 +101,8 @@ int	set_player(t_game *g)
 
 int	validate_and_init_map(t_game *g)
 {
+	if (g->map->h < 3 || g->map->w < 3)
+		return (0);
 	if (!valid_chars(g->map))
 		return (0);
 	if (!no_empty_gaps(g->map))

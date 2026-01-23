@@ -18,6 +18,8 @@ static int	alloc_structs(t_game *g)
 	if (!g->map)
 		return (0);
 	ft_bzero(g->map, sizeof(t_map));
+	g->map->f_col = -1;
+	g->map->c_col = -1;
 	g->tex = malloc(sizeof(t_tex));
 	if (!g->tex)
 		return (0);

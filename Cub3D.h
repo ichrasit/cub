@@ -142,6 +142,12 @@ void	clean_exit(t_game *g, char *m, int c);
 
 int		parse_map(t_game *g, char *f);
 int		read_config(t_game *g, char *f);
+int		get_path(char *s, char **p, int i);
+int		get_rgb(char *s, int *c);
+int		check_dup_tex(t_game *g, int i, char *s);
+int		check_dup_tex2(t_game *g, int i, char *s);
+int		check_dup_col(t_game *g, int i, char *s);
+int		chk_complete(t_game *g);
 char	*get_next_line(int fd);
 void	clear_gnl_fd(int fd);
 int		contiguous_map_block(char *f);
